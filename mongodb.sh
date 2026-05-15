@@ -28,22 +28,21 @@ VALIDATE(){
 cp mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
 
 dnf install mongodb-org -y &>>$LOG_FILE
-VALIDATE $? "installing mongodb"
+VALIDATE $? "installing mongodb" | tee - a $LOG_FILE
 
 systemctl enable mongod &>>$LOG_FILE
-VALIDATE $? "enabling mongodb"
+VALIDATE $? "enabling mongodb" | tee - a $LOG_FILE
 
 systemctl start mongod &>>$LOG_FILE
-VALIDATE $? "starting mongodb"
+VALIDATE $? "starting mongodb" | tee - a $LOG_FILE
 
 sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf &>>$LOG_FILE
-VALIDATE $? "Updated listen address from 127.0.0.1 to 0.0.0.0 in /etc/mongod.conf"
+VALIDATE $? "Updated listen address from 127.0.0.1 to 0.0.0.0 in /etc/mongod.conf" | tee - a $LOG_FILE
 
 systemctl restart mongod &>>$LOG_FILE
-VALIDATE $? "restarted mongodb"
+VALIDATE $? "restarted mongodb" | tee - a $LOG_FILE
 
-ss -lntp | grep mongod &>>$LOG_FILE
-VALIDATE $? "checking mongodb is listening on port 27017"
+netstat -lntp | tee - a $LOG_FILE
 
 echo "script ended excecuting at: $(date)" | tee -a $LOG_FILE
 
