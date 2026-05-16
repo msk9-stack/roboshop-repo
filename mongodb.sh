@@ -1,31 +1,37 @@
 #!/bin/bash
 
+USER_ID=$(id -u)
+
+R="\e[31m"
+G="\e[32m"
+Y="\e[33m"
+N="\e[0m"
+
 LOG_FOLDER="/var/log/mongo_logs"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1)
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
 
-USER_ID=$(id -u)
+mkdir -p $LOG_FOLDER
+echo "script started excecuting at: $(date)" | tee -a $LOG_FILE
 
 if [ $USER_ID -ne 0 ]; then
 	echo "error: this script can be executed with root access"
 	exit 1
 else
-	echo "seccess: Script is running with root access"
+	echo "success: Script is running with root access"
 fi
 
-mkdir -p $LOG_FOLDER
-
-echo "script started excecuting at: $(date)" | tee -a $LOG_FILE
 
 VALIDATE(){
 	if [ $1 -ne 0 ]; then
-		echo "error: $2 failed to installed"
+		echo -e "error: $2 $R failed $N"
 	else
-		echo "success: $2 installed successfully"
+		echo -e "success: $2 $G success $N"
 	fi
 }
 
 cp mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
+VALIDATE $? "adding mongo repo" | tee - a $LOG_FILE
 
 dnf install mongodb-org -y &>>$LOG_FILE
 VALIDATE $? "installing mongodb" | tee - a $LOG_FILE
