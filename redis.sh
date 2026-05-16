@@ -54,5 +54,7 @@ VALIDATE $? "enble redis"
 systemctl start redis &>>$LOG_FILE
 VALIDATE $? "start redis"
 
+sleep 5
+
 echo "script started excecuting at: $END_TIME" | tee -a $LOG_FILE
-echo "Total duration of the script: $TIME_TAKEN"
+echo "Total duration of the script: $TIME_TAKEN sec"
