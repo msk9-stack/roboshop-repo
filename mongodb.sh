@@ -51,7 +51,5 @@ VALIDATE $? "Updated listen address from 127.0.0.1 to 0.0.0.0 in /etc/mongod.con
 systemctl restart mongod &>>$LOG_FILE
 VALIDATE $? "restarted mongodb" | tee - a $LOG_FILE
 
-netstat -lntp | tee - a $LOG_FILE
-
 echo "script ended excecuting at: $END_TIME" | tee -a $LOG_FILE
 echo "total time taken to execute the script: $TIME_TAKEN seconds" | tee -a $LOG_FILE
