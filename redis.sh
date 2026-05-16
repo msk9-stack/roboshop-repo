@@ -27,9 +27,9 @@ fi
 
 VALIDATE(){
 	if [ $1 -ne 0 ]; then
-		echo -e "error: $2 $R failed $N"
+		echo -e "error: $2 installation..$R failed $N"
 	else
-		echo -e "success: $2 $G success $N"
+		echo -e "$2 installation $G success $N"
 	fi
 }
 
@@ -55,3 +55,4 @@ systemctl start redis &>>$LOG_FILE
 VALIDATE $? "start redis"
 
 echo "script started excecuting at: $END_TIME" | tee -a $LOG_FILE
+echo "Total duration of the script: $TIME_TAKEN"
