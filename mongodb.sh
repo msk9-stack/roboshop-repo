@@ -18,10 +18,10 @@ mkdir -p $LOG_FOLDER
 echo "script started excecuting at: $START_TIME" | tee -a $LOG_FILE
 
 if [ $USER_ID -ne 0 ]; then
-	echo "error: this script can be executed with root access"
+	echo -e "$R error $N: this script can be executed with root access"
 	exit 1
 else
-	echo "success: Script is running with root access"
+	echo -e "$G success $N: Script is running with root access"
 fi
 
 
