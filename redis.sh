@@ -12,7 +12,7 @@ SCRIPT_NAME=$( echo $0 | cut -d "." -f1)
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
 START_TIME=$(date +%s)
 END_TIME=$(date +%s)
-TIME_TAKEN=$(($END_TIME - $START_TIME))
+TIME_TAKEN=$((END_TIME - START_TIME))
 
 mkdir -p $LOG_FOLDER
 echo "script started excecuting at: $START_TIME" | tee -a $LOG_FILE
