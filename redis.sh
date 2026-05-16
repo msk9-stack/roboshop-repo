@@ -16,7 +16,6 @@ TIME_TAKEN=$((END_TIME - START_TIME))
 
 mkdir -p $LOG_FOLDER
 echo "script started excecuting at: $(date)" | tee -a $LOG_FILE
-echo "start time: $START_TIME sec"
 
 if [ $USER_ID -ne 0 ]; then
 	echo -e "$R error $N: this script can be executed with root access"
@@ -55,9 +54,6 @@ VALIDATE $? "enble redis"
 systemctl start redis &>>$LOG_FILE
 VALIDATE $? "start redis"
 
-sleep 5
-
 echo "script ended excecuting at: $(date)" | tee -a $LOG_FILE
-echo "end time: $END_TIME sec
 
-echo "Total duration: $TIME_TAKEN sec" &>>$LOG_FILE
+echo "Total duration: $TIME_TAKEN sec" | tee -a $LOG_FILE
