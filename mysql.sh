@@ -33,14 +33,14 @@ VALIDATE(){
 	fi
 }
 
-dnf install mysql-server -y
+dnf install mysql-server -y &>>LOG_FILE
 VALIDATE $? "installing mysql"
 
-systemctl enable mysqld
+systemctl enable mysqld &>>LOG_FILE
 VALIDATE $? "enabling mysql"
 
-systemctl start mysqld  
+systemctl start mysqld &>>LOG_FILE
 VALIDATE $? "starting mysql"
 
-mysql_secure_installation --set-root-pass RoboShop@1
+mysql_secure_installation --set-root-pass RoboShop@1 &>>LOG_FILE
 VALIDATE $? "setting up the root password for mysql"
