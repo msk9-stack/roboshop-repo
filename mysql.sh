@@ -44,3 +44,6 @@ VALIDATE $? "starting mysql"
 
 mysql_secure_installation --set-root-pass RoboShop@1 &>>LOG_FILE
 VALIDATE $? "setting up the root password for mysql"
+
+echo "script started excecuting at: $(date)" | tee -a $LOG_FILE
+echo "total time taken for script to execute: $TIME_TAKEN sec | tee -a $LOG_FILE
