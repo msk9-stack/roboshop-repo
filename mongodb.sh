@@ -26,9 +26,9 @@ fi
 
 VALIDATE(){
 	if [ $1 -ne 0 ]; then
-		echo -e "{R}error{N}: $2 failed" | tee -a "$LOG_FILE"
+		echo -e "{R} error {N}: $2 failed" | tee -a "$LOG_FILE"
 	else
-		echo -e "{G}success{N}: $2 completed successfully" | tee -a "$LOG_FILE"
+		echo -e "{G} success {N}: $2 completed successfully" | tee -a "$LOG_FILE"
 	fi
 }
 
