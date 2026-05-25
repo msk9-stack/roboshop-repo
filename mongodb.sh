@@ -11,11 +11,10 @@ LOG_FOLDER="/var/log/mongo_logs"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1)
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
 START_TIME=$(date +%s)
-END_TIME=$(date +%s)
-TIME_TAKEN=$(($END_TIME - $START_TIME))
+
 
 mkdir -p $LOG_FOLDER
-echo "script started excecuting at: $START_TIME" | tee -a $LOG_FILE
+echo "script started excecuting at: $(date)" | tee -a "$LOG_FILE"
 
 if [ $USER_ID -ne 0 ]; then
 	echo -e "$R error $N: this script can be executed with root access"
@@ -27,29 +26,34 @@ fi
 
 VALIDATE(){
 	if [ $1 -ne 0 ]; then
-		echo -e "error: $2 $R failed $N"
+		echo -e "{R}error{N}: $2 failed" | tee -a "$LOG_FILE"
 	else
-		echo -e "success: $2 $G success $N"
+		echo -e "{G}success{N}: $2 completed successfully" | tee -a "$LOG_FILE"
 	fi
 }
 
 cp mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
-VALIDATE $? "adding mongo repo" | tee - a $LOG_FILE
+VALIDATE $? "adding mongo repo" 
 
 dnf install mongodb-org -y &>>$LOG_FILE
-VALIDATE $? "installing mongodb" | tee - a $LOG_FILE
+VALIDATE $? "installing mongodb" 
 
 systemctl enable mongod &>>$LOG_FILE
-VALIDATE $? "enabling mongodb" | tee - a $LOG_FILE
+VALIDATE $? "enabling mongodb" 
 
 systemctl start mongod &>>$LOG_FILE
-VALIDATE $? "starting mongodb" | tee - a $LOG_FILE
+VALIDATE $? "starting mongodb" 
 
 sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf &>>$LOG_FILE
-VALIDATE $? "Updated listen address from 127.0.0.1 to 0.0.0.0 in /etc/mongod.conf" | tee - a $LOG_FILE
+VALIDATE $? "Updated listen address from 127.0.0.1 to 0.0.0.0 in /etc/mongod.conf"
 
 systemctl restart mongod &>>$LOG_FILE
-VALIDATE $? "restarted mongodb" | tee - a $LOG_FILE
+VALIDATE $? "restarted mongodb" 
 
-echo "script ended excecuting at: $END_TIME" | tee -a $LOG_FILE
+END_TIME=$(date +%s)
+TIME_TAKEN=$(($END_TIME - $START_TIME))
+
+echo "script ended excecuting at: $(date)" | tee -a $LOG_FILE
+
+
 echo "total time taken to execute the script: $TIME_TAKEN seconds" | tee -a $LOG_FILE
